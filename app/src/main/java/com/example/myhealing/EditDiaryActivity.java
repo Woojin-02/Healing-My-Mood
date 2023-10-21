@@ -2,10 +2,13 @@ package com.example.myhealing;
 
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
+import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -26,6 +29,7 @@ public class EditDiaryActivity extends AppCompatActivity {
     String diaryDetail;
     TextView dateText;
     private ImageView ivGoBackMenu;
+    private static final int ACT_SET_BIRTH = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +78,22 @@ public class EditDiaryActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    DatePickerDialog.OnDateSetListener mDateSetListener =
+            new DatePickerDialog.OnDateSetListener() {
+                @Override
+                public void onDateSet(DatePicker datePicker, int yy, int mm, int dd) {
+                    // Date Picker에서 선택한 날짜를 TextView에 설정
+                    TextView tv = findViewById(R.id.date_text);
+                    tv.setText(String.format("%d-%d-%d", yy,mm+1,dd));
+                }
+            };
+
+    public void mOnClick_DatePick(View view) {
+        // DATE Picker를 스피너 모드로 띄우기
+        Calendar cal = Calendar.getInstance();
+        new DatePickerDialog(this, AlertDialog.THEME_HOLO_LIGHT, mDateSetListener, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DATE)).show();
     }
 
     @Override
