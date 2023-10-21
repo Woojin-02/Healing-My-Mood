@@ -353,6 +353,10 @@ public class ChatActivity extends AppCompatActivity {
                         JSONArray jsonArray = jsonObject.getJSONArray("choices");
                         String result = jsonArray.getJSONObject(0).getJSONObject("message").getString("content");
                         addResponse(result.trim());
+                        diaryResponse = result.trim();
+
+                        // 결과를 반환하는 메서드를 호출
+                        processDiaryResponse(diaryResponse);
                     }catch (JSONException e){
                         e.printStackTrace();
                     }
@@ -362,8 +366,45 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
-        System.out.println(diaryResponse);
+    }
 
+    void processDiaryResponse(String response) {
+        // 정규 표현식을 사용하여 일기 정보를 추출
+        Pattern datePattern = Pattern.compile("날짜: (.*?)\\n");
+        Pattern titlePattern = Pattern.compile("제목: (.*?)\\n");
+        Pattern emotionPattern = Pattern.compile("감정: (.*?)\\n");
+        Pattern detailPattern = Pattern.compile("내용: ([\\s\\S]*)");
+
+        Matcher dateMatcher = datePattern.matcher(response);
+        Matcher titleMatcher = titlePattern.matcher(response);
+        Matcher emotionMatcher = emotionPattern.matcher(response);
+        Matcher detailMatcher = detailPattern.matcher(response);
+
+        if (dateMatcher.find()) {
+            diaryDate = dateMatcher.group(1);
+        }
+
+        if (titleMatcher.find()) {
+            diaryTitle = titleMatcher.group(1);
+        }
+
+        if (emotionMatcher.find()) {
+            diaryEmotion = emotionMatcher.group(1);
+        }
+
+        if (detailMatcher.find()) {
+            diaryDetail = detailMatcher.group(1);
+        }
+
+        //EditDiaryActivity로 데이터 전달
+        Intent intent = new Intent(ChatActivity.this, EditDiaryActivity.class);
+
+        intent.putExtra("diaryDate", diaryDate);
+        intent.putExtra("diaryTitle", diaryTitle);
+        intent.putExtra("diaryEmotion", diaryEmotion);
+        intent.putExtra("diaryDetail", diaryDetail);
+
+        startActivity(intent);
     }
 
     @Override
