@@ -24,7 +24,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ChatActivity"></activity>
-        <activity android:name=".EditDiaryActivity"></activity>
+        <activity android:name=".EditDiaryActivity" android:windowSoftInputMode="adjustResize"></activity>
 
     </application>
 
