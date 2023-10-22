@@ -2,6 +2,7 @@ package com.example.myhealing;
 
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Intent;
@@ -29,7 +30,7 @@ public class EditDiaryActivity extends AppCompatActivity {
     String diaryDetail;
     TextView dateText;
     private ImageView ivGoBackMenu;
-    private static final int ACT_SET_BIRTH = 1;
+    private TextView ivCreateDiary;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +79,24 @@ public class EditDiaryActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        ivCreateDiary=findViewById(R.id.iv_create_diary);
+        ivCreateDiary.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "onClick: 생성/수정 버튼 클릭됨");
+                Toast.makeText(getApplicationContext(), "일기 생성됨", Toast.LENGTH_SHORT).show();
+
+                String sTitle = editTitle.getText().toString();
+                String sEmotion = editEmotion.getText().toString();
+                String sDetail = editDetail.getText().toString();
+                String sDate = dateText.getText().toString();
+
+                //사용자 등록
+                insertDiary(sTitle, sEmotion, sDetail, sDate);
+
+            }
+        });
     }
 
     DatePickerDialog.OnDateSetListener mDateSetListener =
@@ -94,6 +113,22 @@ public class EditDiaryActivity extends AppCompatActivity {
         // DATE Picker를 스피너 모드로 띄우기
         Calendar cal = Calendar.getInstance();
         new DatePickerDialog(this, AlertDialog.THEME_HOLO_LIGHT, mDateSetListener, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DATE)).show();
+    }
+
+    private void insertDiary(String title, String emotion, String detail, String date){
+
+        EmotionalDiary diary = new EmotionalDiary();
+        diary.title = title;
+        diary.emotion = emotion;
+        diary.detail = detail;
+        diary.creationDate = date;
+
+        AppDatabase db = AppDatabase.getDBInstance(this.getApplicationContext());
+        db.diaryDao().insertDiary(diary);
+
+        setResult(Activity.RESULT_OK);
+
+        finish();
     }
 
     @Override
