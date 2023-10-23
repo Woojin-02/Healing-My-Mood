@@ -11,13 +11,19 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start|left"
-        app:menu="@menu/menu_main" />
+        app:menu="@menu/menu_main" >
+    </com.google.android.material.navigation.NavigationView>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"/>
     <include  layout="@layout/toolbar_main"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <!-- 버튼 추가 -->
     <Button
@@ -29,5 +35,14 @@
         android:layout_marginEnd="4dp"
         android:layout_marginBottom="3dp"
         android:text="+" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_alignParentBottom="true"
+        android:text="Button"
+        android:onClick="database_data"/>
 
 </RelativeLayout>

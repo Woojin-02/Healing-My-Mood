@@ -14,6 +14,9 @@ public interface EmotionalDiaryDao {
     @Query("SELECT * FROM emotionalDiary")
     List<EmotionalDiary> getAllDiary();
 
+    @Query("SELECT diaryCode FROM emotionaldiary")
+    List<EmotionalDiary> getDiaryById();
+
     @Insert
     void insertDiary(EmotionalDiary healing);
 

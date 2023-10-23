@@ -20,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 public class EditDiaryActivity extends AppCompatActivity {
@@ -83,9 +84,9 @@ public class EditDiaryActivity extends AppCompatActivity {
         ivCreateDiary=findViewById(R.id.iv_create_diary);
         ivCreateDiary.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
                 Log.d(TAG, "onClick: 생성/수정 버튼 클릭됨");
-                Toast.makeText(getApplicationContext(), "일기 생성됨", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getApplicationContext(), "버튼 클릭됨", Toast.LENGTH_SHORT).show();
 
                 String sTitle = editTitle.getText().toString();
                 String sEmotion = editEmotion.getText().toString();
@@ -117,18 +118,35 @@ public class EditDiaryActivity extends AppCompatActivity {
 
     private void insertDiary(String title, String emotion, String detail, String date){
 
+        // 현재 시간 정보 가져오기
+        Calendar cal = Calendar.getInstance();
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH) + 1; // 월은 0부터 시작하므로 1을 더합니다.
+        int day = cal.get(Calendar.DAY_OF_MONTH);
+        int hour = cal.get(Calendar.HOUR_OF_DAY);
+        int minute = cal.get(Calendar.MINUTE);
+
+        // diaryCode 생성 (년도 뒤 4자리, 월일 4자리, 시분 4자리)
+        String diarycode = String.format(Locale.getDefault(), "%02d%02d%02d%02d%02d", year, month, day, hour, minute);
+        int diaryCode = Integer.parseInt(diarycode);
+
+        AppDatabase db = AppDatabase.getDBInstance(this.getApplicationContext());
+
         EmotionalDiary diary = new EmotionalDiary();
+        diary.diaryCode = diaryCode;
         diary.title = title;
         diary.emotion = emotion;
         diary.detail = detail;
         diary.creationDate = date;
 
-        AppDatabase db = AppDatabase.getDBInstance(this.getApplicationContext());
+        // 데이터베이스에 일기 삽입
         db.diaryDao().insertDiary(diary);
+        Toast.makeText(this, "일기 저장 성공", Toast.LENGTH_SHORT).show();
 
-        setResult(Activity.RESULT_OK);
-
-        finish();
+        // MainActivity를 시작하고 다른 Intent 모두 종료
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 
     @Override
