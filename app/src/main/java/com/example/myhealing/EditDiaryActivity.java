@@ -86,16 +86,13 @@ public class EditDiaryActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "onClick: 생성/수정 버튼 클릭됨");
-//                Toast.makeText(getApplicationContext(), "버튼 클릭됨", Toast.LENGTH_SHORT).show();
 
                 String sTitle = editTitle.getText().toString();
                 String sEmotion = editEmotion.getText().toString();
                 String sDetail = editDetail.getText().toString();
                 String sDate = dateText.getText().toString();
 
-                //사용자 등록
                 insertDiary(sTitle, sEmotion, sDetail, sDate);
-
             }
         });
     }
@@ -118,35 +115,48 @@ public class EditDiaryActivity extends AppCompatActivity {
 
     private void insertDiary(String title, String emotion, String detail, String date){
 
-        // 현재 시간 정보 가져오기
-        Calendar cal = Calendar.getInstance();
-        int year = cal.get(Calendar.YEAR);
-        int month = cal.get(Calendar.MONTH) + 1; // 월은 0부터 시작하므로 1을 더합니다.
-        int day = cal.get(Calendar.DAY_OF_MONTH);
-        int hour = cal.get(Calendar.HOUR_OF_DAY);
-        int minute = cal.get(Calendar.MINUTE);
+        try {
+            // 현재 시간 정보 가져오기
+            Calendar cal = Calendar.getInstance();
+            int year = cal.get(Calendar.YEAR);
+            int month = cal.get(Calendar.MONTH) + 1; // 월은 0부터 시작하므로 1을 더합니다.
+            int day = cal.get(Calendar.DAY_OF_MONTH);
+            int hour = cal.get(Calendar.HOUR_OF_DAY);
+            int minute = cal.get(Calendar.MINUTE);
 
-        // diaryCode 생성 (년도 뒤 4자리, 월일 4자리, 시분 4자리)
-        String diarycode = String.format(Locale.getDefault(), "%02d%02d%02d%02d%02d", year, month, day, hour, minute);
-        int diaryCode = Integer.parseInt(diarycode);
+            // diaryCode 생성 (년도 뒤 4자리, 월일 4자리, 시분 4자리)
+            int diaryCode = year * 100000000 + month * 1000000 + day * 10000 + hour * 100 + minute;
 
-        AppDatabase db = AppDatabase.getDBInstance(this.getApplicationContext());
+            // AppDatabase 인스턴스 생성
+            AppDatabase db = AppDatabase.getDBInstance(getApplicationContext());
 
-        EmotionalDiary diary = new EmotionalDiary();
-        diary.diaryCode = diaryCode;
-        diary.title = title;
-        diary.emotion = emotion;
-        diary.detail = detail;
-        diary.creationDate = date;
+            db.runInTransaction(() -> {
+                // EmotionalDiary 객체 생성 및 데이터 설정
+                EmotionalDiary diary = new EmotionalDiary();
+                diary.diaryCode = diaryCode;
+                diary.title = title;
+                diary.emotion = emotion;
+                diary.detail = detail;
+                diary.creationDate = date;
 
-        // 데이터베이스에 일기 삽입
-        db.diaryDao().insertDiary(diary);
-        Toast.makeText(this, "일기 저장 성공", Toast.LENGTH_SHORT).show();
+                // 데이터베이스에 일기 삽입
+                db.diaryDao().insertDiary(diary);
+            });
 
-        // MainActivity를 시작하고 다른 Intent 모두 종료
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
+            Toast.makeText(getApplicationContext(), "일기 저장 성공", Toast.LENGTH_SHORT).show();
+
+            // Intent를 사용하여 MainActivity를 시작하고 현재 활동을 종료합니다
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish(); // 현재 활동 종료
+
+            finish(); // 현재 액티비티 종료
+        } catch (Exception e) {
+            e.printStackTrace();
+            String errorMessage = "일기 저장 중 오류가 발생했습니다: " + e.getMessage();
+            Toast.makeText(getApplicationContext(), errorMessage, Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
