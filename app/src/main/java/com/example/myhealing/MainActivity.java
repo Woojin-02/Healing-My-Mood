@@ -134,19 +134,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    // DatePickerDialog를 표시하는 메서드
-    private void showDatePickerDialog() {
-        DatePickerDialog datePickerDialog = new DatePickerDialog(this, AlertDialog.THEME_HOLO_LIGHT, new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                currentYear = year;
-                currentMonth = monthOfYear + 1; // monthOfYear는 0부터 시작하므로 1을 더합니다
-                updateYearMonthText();
-            }
-        }, currentYear, currentMonth - 1, 1); // 현재 년월을 설정합니다
-        datePickerDialog.show();
-    }
-
     // yearMonthTextView의 텍스트를 업데이트합니다.
     private void updateYearMonthText() {
 
