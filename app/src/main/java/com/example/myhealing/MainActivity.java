@@ -116,10 +116,10 @@ public class MainActivity extends AppCompatActivity {
                         currentYear = year;
                         currentMonth = monthOfYear;
                         updateYearMonthText();
+                        loadUserListInMonth(currentYear, currentMonth);
                     }
                 });
                 pd.show(getSupportFragmentManager(), "YearMonthPickerTest");
-                loadUserListInMonth(currentYear, currentMonth);
             }
         });
 
