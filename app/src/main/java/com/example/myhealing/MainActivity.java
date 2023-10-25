@@ -60,9 +60,6 @@ public class MainActivity extends AppCompatActivity {
         //RecyclerView Adapter 설정
         recyclerView.setAdapter(adapter);
 
-        //사용자 조회
-        loadUserList();
-
         yearMonthTextView = findViewById(R.id.yearMonthTextView);
         prevMonthButton = findViewById(R.id.prevMonthButton);
         nextMonthButton = findViewById(R.id.nextMonthButton);
@@ -74,6 +71,9 @@ public class MainActivity extends AppCompatActivity {
 
         // 초기 월을 설정합니다.
         updateYearMonthText();
+        //사용자 조회
+        loadUserListInMonth(currentYear, currentMonth);
+
         prevMonthButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -86,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
                     currentYear--;
                 }
                 updateYearMonthText();
+                loadUserListInMonth(currentYear, currentMonth);
             }
         });
 
@@ -100,6 +101,7 @@ public class MainActivity extends AppCompatActivity {
                     currentMonth++;
                 }
                 updateYearMonthText();
+                loadUserListInMonth(currentYear, currentMonth);
             }
         });
 
@@ -117,6 +119,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
                 pd.show(getSupportFragmentManager(), "YearMonthPickerTest");
+                loadUserListInMonth(currentYear, currentMonth);
             }
         });
 
@@ -136,7 +139,6 @@ public class MainActivity extends AppCompatActivity {
 
     // yearMonthTextView의 텍스트를 업데이트합니다.
     private void updateYearMonthText() {
-
         String yearMonth = currentYear + "년 " + currentMonth + "월";
         yearMonthTextView.setText(yearMonth);
     }
@@ -150,21 +152,21 @@ public class MainActivity extends AppCompatActivity {
                     if(result.getResultCode() == RESULT_OK){
 
                         //사용자 조회
-                        loadUserList();
+                        loadUserListInMonth(currentYear, currentMonth);
                     }
                 }
             }
     );
 
     //사용자 조회
-    private void loadUserList() {
-
+    private void loadUserListInMonth(int currentYear, int currentMonth) {
+        // 년도와 월을 가져와서 yyyy-MM 형태의 문자열로 만듭니다
+        String yearMonthPrefix = String.format("%04d-%02d-", currentYear, currentMonth);
         AppDatabase db = AppDatabase.getDBInstance(this.getApplicationContext());
-
-        List<EmotionalDiary> userList = db.diaryDao().getAllDiary();
-
+        List<EmotionalDiary> DiaryList = db.diaryDao().getDiaryByMonth(yearMonthPrefix);
+//        Toast.makeText(this, yearMonthPrefix, Toast.LENGTH_SHORT).show();
         //리스트 저장
-        adapter.setUserList(userList);
+        adapter.setDiaryList(DiaryList);
     }
 
     @Override

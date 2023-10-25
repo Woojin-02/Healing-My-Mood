@@ -17,6 +17,9 @@ public interface EmotionalDiaryDao {
     @Query("SELECT diaryCode FROM emotionaldiary")
     List<EmotionalDiary> getDiaryById();
 
+    @Query("SELECT * FROM emotionalDiary WHERE creationDate LIKE :yearMonthPrefix || '%'")
+    List<EmotionalDiary> getDiaryByMonth(String yearMonthPrefix);
+
     @Insert
     void insertDiary(EmotionalDiary healing);
 
