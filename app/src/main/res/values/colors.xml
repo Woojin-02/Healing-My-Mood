@@ -5,4 +5,6 @@
     <color name="purple_200">#FFBB86FC</color>
     <color name="teal_200">#069E8E</color>
     <color name="teal_100">#68A18C</color>  <!-- 85B9A7    68A18C -->
+    <color name="teal_0">#85B9A7</color>
+    <color name="light_gray">#D3D3D3</color>
 </resources>

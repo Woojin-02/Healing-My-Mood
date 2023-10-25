@@ -9,12 +9,16 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +36,14 @@ public class MainActivity extends AppCompatActivity {
     private TextView yearMonthTextView;
     private TextView prevMonthButton;
     private TextView nextMonthButton;
+
+
+    DatePickerDialog.OnDateSetListener d = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth){
+            Log.d("YearMonthPickerTest", "year = " + year + ", month = " + monthOfYear + ", day = " + dayOfMonth);
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
 
         yearMonthTextView = findViewById(R.id.yearMonthTextView);
         prevMonthButton = findViewById(R.id.prevMonthButton);
+        nextMonthButton = findViewById(R.id.nextMonthButton);
 
         // 현재 날짜를 가져와서 currentYear와 currentMonth에 할당합니다.
         Calendar calendar = Calendar.getInstance();
@@ -77,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // nextMonthButton 클릭 이벤트를 처리합니다.
-        findViewById(R.id.nextMonthButton).setOnClickListener(new View.OnClickListener() {
+        nextMonthButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (currentMonth == 12) {
@@ -87,6 +100,23 @@ public class MainActivity extends AppCompatActivity {
                     currentMonth++;
                 }
                 updateYearMonthText();
+            }
+        });
+
+        yearMonthTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MyYearMonthPickerDialog pd = new MyYearMonthPickerDialog();
+                pd.setListener(new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        // 선택한 년도와 월을 yearMonthTextView에 설정
+                        currentYear = year;
+                        currentMonth = monthOfYear;
+                        updateYearMonthText();
+                    }
+                });
+                pd.show(getSupportFragmentManager(), "YearMonthPickerTest");
             }
         });
 
@@ -102,6 +132,19 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    // DatePickerDialog를 표시하는 메서드
+    private void showDatePickerDialog() {
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this, AlertDialog.THEME_HOLO_LIGHT, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                currentYear = year;
+                currentMonth = monthOfYear + 1; // monthOfYear는 0부터 시작하므로 1을 더합니다
+                updateYearMonthText();
+            }
+        }, currentYear, currentMonth - 1, 1); // 현재 년월을 설정합니다
+        datePickerDialog.show();
     }
 
     // yearMonthTextView의 텍스트를 업데이트합니다.
