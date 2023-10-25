@@ -15,16 +15,23 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.myhealing.adapter.DiaryAdapter;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.util.Calendar;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     DiaryAdapter adapter;
+    private int currentYear;
+    private int currentMonth;
+    private TextView yearMonthTextView;
+    private TextView prevMonthButton;
+    private TextView nextMonthButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,9 +51,44 @@ public class MainActivity extends AppCompatActivity {
         //사용자 조회
         loadUserList();
 
-//        Toolbar toolbar = findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
-//        getSupportActionBar().setTitle("AI 감정일기");
+        yearMonthTextView = findViewById(R.id.yearMonthTextView);
+        prevMonthButton = findViewById(R.id.prevMonthButton);
+
+        // 현재 날짜를 가져와서 currentYear와 currentMonth에 할당합니다.
+        Calendar calendar = Calendar.getInstance();
+        currentYear = calendar.get(Calendar.YEAR);
+        currentMonth = calendar.get(Calendar.MONTH) + 1; // Calendar.MONTH는 0부터 시작하므로 +1을 합니다.
+
+        // 초기 월을 설정합니다.
+        updateYearMonthText();
+        prevMonthButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 현재 월을 감소합니다.
+                currentMonth--;
+
+                // 현재 월이 1월인 경우 현재 연도를 감소합니다.
+                if (currentMonth == 0) {
+                    currentMonth = 12;
+                    currentYear--;
+                }
+                updateYearMonthText();
+            }
+        });
+
+        // nextMonthButton 클릭 이벤트를 처리합니다.
+        findViewById(R.id.nextMonthButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (currentMonth == 12) {
+                    currentYear++;
+                    currentMonth = 1;
+                } else {
+                    currentMonth++;
+                }
+                updateYearMonthText();
+            }
+        });
 
         // 버튼을 XML에서 찾아옴
         Button buttonBottomLeft = findViewById(R.id.btn_bottom_left);
@@ -60,6 +102,13 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    // yearMonthTextView의 텍스트를 업데이트합니다.
+    private void updateYearMonthText() {
+
+        String yearMonth = currentYear + "년 " + currentMonth + "월";
+        yearMonthTextView.setText(yearMonth);
     }
 
     ActivityResultLauncher<Intent> activityResult = registerForActivityResult(
