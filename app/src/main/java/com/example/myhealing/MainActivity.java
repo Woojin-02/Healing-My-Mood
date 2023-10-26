@@ -174,33 +174,4 @@ public class MainActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_main,menu);
         return false;
     }
-
-    public void database_data(View view) {
-        AppDatabase db = AppDatabase.getDBInstance(this.getApplicationContext());
-        // 데이터베이스가 열려 있는지 확인
-        if (db.isOpen()) {
-            Toast.makeText(this, "데이터베이스가 열려 있습니다.", Toast.LENGTH_SHORT).show();
-
-            // 테이블이 생성되어 있는지 확인
-            if (!db.inTransaction()) {
-                Toast.makeText(this, "테이블이 생성되어 있습니다.", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(this, "테이블이 생성되어 있지 않습니다.", Toast.LENGTH_SHORT).show();
-            }
-
-            // 데이터베이스의 데이터 확인
-            List<EmotionalDiary> diaryList = db.diaryDao().getAllDiary();
-
-            if (diaryList != null && !diaryList.isEmpty()) {
-                // 데이터베이스에 데이터가 존재함
-                int numberOfDiaries = diaryList.size();
-                Toast.makeText(this, "데이터베이스에 " + numberOfDiaries + " 개의 일기가 저장되어 있습니다.", Toast.LENGTH_SHORT).show();
-            } else {
-                // 데이터베이스가 비어있음
-                Toast.makeText(this, "데이터베이스에 저장된 일기가 없습니다.", Toast.LENGTH_SHORT).show();
-            }
-        } else {
-            Toast.makeText(this, "데이터베이스가 열려 있지 않습니다.", Toast.LENGTH_SHORT).show();
-        }
-    }
 }
