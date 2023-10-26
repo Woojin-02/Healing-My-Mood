@@ -6,5 +6,6 @@
     <color name="teal_200">#069E8E</color>
     <color name="teal_100">#68A18C</color>  <!-- 85B9A7    68A18C -->
     <color name="teal_0">#85B9A7</color>
+    <color name="teal_bright">#BBD2C3</color>   <!-- ACCCB7   B2D5C1   BBD2C3 -->
     <color name="light_gray">#D3D3D3</color>
 </resources>
