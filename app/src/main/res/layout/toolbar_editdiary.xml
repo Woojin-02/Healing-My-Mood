@@ -4,12 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="50dp"
     app:contentInsetStart="0dp"
-    android:background="@android:color/holo_blue_dark">
+    android:background="@color/teal_100">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/teal_100">
+        android:layout_height="match_parent">
 
         <ImageView
             android:id="@+id/iv_goBack_editToBefore"
@@ -18,6 +17,7 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentStart="true"
             android:layout_alignParentBottom="true"
+            android:layout_marginStart="5dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             app:srcCompat="@drawable/ic_baseline_navigate_before_24" />
@@ -35,7 +35,7 @@
             android:gravity="center"
             android:textStyle="bold"
             android:textColor="@android:color/white"
-            android:textSize="16sp"
+            android:textSize="16dp"
             android:text="AI 감정일기"/>
 
         <TextView
@@ -45,7 +45,7 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginStart="345dp"
+            android:layout_marginStart="335dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             android:textSize="20dp"
