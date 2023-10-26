@@ -23,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.myhealing.adapter.DiaryAdapter;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.Calendar;
@@ -123,13 +124,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // 버튼을 XML에서 찾아옴
-        Button buttonBottomLeft = findViewById(R.id.btn_bottom_left);
-
-        // 버튼 클릭 이벤트 처리
-        buttonBottomLeft.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton fab = findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
                 // 버튼이 클릭되었을 때 수행할 동작
                 Intent intent = new Intent(MainActivity.this, ChatActivity.class);
                 startActivity(intent);

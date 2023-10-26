@@ -3,4 +3,8 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar"/>
     <!-- Customize your theme here. -->
+    <style name="roundedFAB">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item> <!-- 50%로 설정하면 원 모양이 됩니다 -->
+    </style>
 </resources>
