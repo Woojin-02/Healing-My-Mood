@@ -31,7 +31,8 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.MyViewHolder
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         holder.titleText.setText(diaryList.get(position).title);
         holder.emotionText.setText(diaryList.get(position).emotion);
-        holder.creationDate.setText(diaryList.get(position).creationDate);
+        holder.creationText.setText(diaryList.get(position).creationDate);
+        holder.detailText.setText(diaryList.get(position).detail);
     }
 
     @Override
@@ -51,14 +52,15 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.MyViewHolder
 
     class MyViewHolder extends RecyclerView.ViewHolder{
 
-        TextView titleText, emotionText, creationDate;
+        TextView titleText, emotionText, creationText, CodeText, detailText;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
             titleText = itemView.findViewById(R.id.title_text);
             emotionText = itemView.findViewById(R.id.emotion_text);
-            creationDate = itemView.findViewById(R.id.creation_text);
+            creationText = itemView.findViewById(R.id.creation_text);
+            detailText = itemView.findViewById(R.id.detail_text);
         }
     }
 }
