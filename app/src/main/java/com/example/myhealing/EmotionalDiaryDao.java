@@ -14,11 +14,11 @@ public interface EmotionalDiaryDao {
     @Query("SELECT * FROM emotionalDiary")
     List<EmotionalDiary> getAllDiary();
 
-    @Query("SELECT diaryCode FROM emotionaldiary")
-    List<EmotionalDiary> getDiaryById();
-
     @Query("SELECT * FROM emotionalDiary WHERE creationDate LIKE :yearMonthPrefix || '%'")
     List<EmotionalDiary> getDiaryByMonth(String yearMonthPrefix);
+
+    @Query("SELECT * FROM emotionalDiary WHERE diaryCode = :diaryCode")
+    EmotionalDiary getOneDiaryByCode(int diaryCode);
 
     @Insert
     void insertDiary(EmotionalDiary healing);

@@ -15,6 +15,7 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class ShowDiaryActivity extends AppCompatActivity {
@@ -23,8 +24,7 @@ public class ShowDiaryActivity extends AppCompatActivity {
     int diaryCode;
     private ImageView ivGoBackShowToMain;
     private ImageView ivMoreUpdateAndDelete;
-    private static final int MENU_ITEM_UPDATE = 1;
-    private static final int MENU_ITEM_DELETE = 2;
+    private static final int YOUR_UPDATE_REQUEST_CODE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +50,6 @@ public class ShowDiaryActivity extends AppCompatActivity {
         emotionText.setText(emotion);
         detailText.setText(detail);
 
-
-
         ivGoBackShowToMain=findViewById(R.id.iv_goBack_showToMain);
         ivMoreUpdateAndDelete=findViewById(R.id.iv_more_updateAndDelete);
 
@@ -59,7 +57,10 @@ public class ShowDiaryActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "onClick: 뒤로가기 클릭됨");
-                // intent 종료
+                // Intent를 사용하여 MainActivity를 시작하고 현재 활동을 종료합니다
+                Intent intent = new Intent(ShowDiaryActivity.this, MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
                 finish();
             }
         });
@@ -89,7 +90,7 @@ public class ShowDiaryActivity extends AppCompatActivity {
                 switch (it) {
                     case 1:
                         // 수정 메뉴 아이템 클릭 시 수행할 동작
-//                        Toast.makeText(getApplicationContext(), "수정", Toast.LENGTH_SHORT).show();
+                        updateDiary();
                         return true;
                     case 2:
                         // 삭제 메뉴 아이템 클릭 시 수행할 동작
@@ -102,6 +103,26 @@ public class ShowDiaryActivity extends AppCompatActivity {
         });
 
         popupMenu.show();
+    }
+
+    private void updateDiary() {
+        // 다섯 가지 데이터 가져오기
+        String date = getIntent().getStringExtra("creationDate");
+        String title = getIntent().getStringExtra("title");
+        String emotion = getIntent().getStringExtra("emotion");
+        String detail = getIntent().getStringExtra("detail");
+        diaryCode = getIntent().getIntExtra("diaryCode", 0);
+
+        // UpdateDiaryActivity로 데이터 전달을 위한 Intent 생성
+        Intent intent = new Intent(ShowDiaryActivity.this, UpdateDiaryActivity.class);
+        intent.putExtra("creationDate", date);
+        intent.putExtra("title", title);
+        intent.putExtra("emotion", emotion);
+        intent.putExtra("detail", detail);
+        intent.putExtra("diaryCode", diaryCode);
+
+        // UpdateDiaryActivity 실행
+        startActivityForResult(intent, YOUR_UPDATE_REQUEST_CODE);
     }
 
     private void deleteDiary() {
@@ -147,6 +168,23 @@ public class ShowDiaryActivity extends AppCompatActivity {
 
         // 해당 diaryCode를 사용하여 일기를 삭제합니다.
         db.diaryDao().deleteDiaryByCode(diaryCode);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == YOUR_UPDATE_REQUEST_CODE && resultCode == RESULT_OK) {
+            String updatedDate = data.getStringExtra("creationDate");
+            String updatedTitle = data.getStringExtra("title");
+            String updatedEmotion = data.getStringExtra("emotion");
+            String updatedDetail = data.getStringExtra("detail");
+
+            // 여기서 수정된 데이터를 화면에 업데이트하거나 처리합니다.
+            dateTextView.setText(updatedDate);
+            titleText.setText(updatedTitle);
+            emotionText.setText(updatedEmotion);
+            detailText.setText(updatedDetail);
+        }
     }
 
 }
