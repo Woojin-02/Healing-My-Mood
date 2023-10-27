@@ -30,6 +30,8 @@ public class EditDiaryActivity extends AppCompatActivity {
     String diaryEmotion;
     String diaryDetail;
     TextView dateText;
+
+    private int currentYear, currentMonth, currentDay;
     private ImageView ivGoBackMenu;
     private TextView ivCreateDiary;
 
@@ -69,6 +71,27 @@ public class EditDiaryActivity extends AppCompatActivity {
         // diaryDetail 값을 EditText에 설정
         editDetail.setText(diaryDetail);
 
+        dateText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MyDatePickerDialog pd = new MyDatePickerDialog();
+
+                String update_date = dateText.getText().toString();
+                pd.setUpdateDate(update_date);
+                pd.setListener(new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        // 선택한 년도와 월을 yearMonthTextView에 설정
+                        currentYear = year;
+                        currentMonth = monthOfYear;
+                        currentDay = dayOfMonth;
+                        updateYearMonthText();
+                    }
+                });
+                pd.show(getSupportFragmentManager(), "DatePickerTest");
+            }
+        });
+
         //toolbar 버튼 설정
         ivGoBackMenu=findViewById(R.id.iv_goBack_editToBefore);
         ivGoBackMenu.setOnClickListener(new View.OnClickListener() {
@@ -97,20 +120,10 @@ public class EditDiaryActivity extends AppCompatActivity {
         });
     }
 
-    DatePickerDialog.OnDateSetListener mDateSetListener =
-            new DatePickerDialog.OnDateSetListener() {
-                @Override
-                public void onDateSet(DatePicker datePicker, int yy, int mm, int dd) {
-                    // Date Picker에서 선택한 날짜를 TextView에 설정
-                    TextView tv = findViewById(R.id.date_text);
-                    tv.setText(String.format("%d-%d-%d", yy,mm+1,dd));
-                }
-            };
-
-    public void mOnClick_DatePick(View view) {
-        // DATE Picker를 스피너 모드로 띄우기
-        Calendar cal = Calendar.getInstance();
-        new DatePickerDialog(this, AlertDialog.THEME_HOLO_LIGHT, mDateSetListener, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DATE)).show();
+    // dateText의 텍스트를 업데이트합니다.
+    private void updateYearMonthText() {
+        String yearMonthDay = currentYear + "-" + currentMonth + "-" + currentDay;
+        dateText.setText(yearMonthDay);
     }
 
     private void insertDiary(String title, String emotion, String detail, String date){
