@@ -167,9 +167,9 @@ public class MainActivity extends AppCompatActivity {
         adapter.setDiaryList(DiaryList);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main,menu);
-        return false;
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        getMenuInflater().inflate(R.menu.menu_main,menu);
+//        return false;
+//    }
 }

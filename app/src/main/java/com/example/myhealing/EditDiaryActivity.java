@@ -150,8 +150,6 @@ public class EditDiaryActivity extends AppCompatActivity {
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
             finish(); // 현재 활동 종료
-
-            finish(); // 현재 액티비티 종료
         } catch (Exception e) {
             e.printStackTrace();
             String errorMessage = "일기 저장 중 오류가 발생했습니다: " + e.getMessage();

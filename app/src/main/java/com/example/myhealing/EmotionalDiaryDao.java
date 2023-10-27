@@ -26,6 +26,9 @@ public interface EmotionalDiaryDao {
     @Delete
     void deleteDiary(EmotionalDiary healing);
 
+    @Query("DELETE FROM emotionalDiary WHERE diaryCode = :diaryCode")
+    void deleteDiaryByCode(int diaryCode);
+
     @Update
     void updateDiary(EmotionalDiary healing);
 
