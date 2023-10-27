@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         //DiaryAdapter 초기화
-        adapter = new DiaryAdapter();
+        adapter = new DiaryAdapter(MainActivity.this);
 
         //RecyclerView Adapter 설정
         recyclerView.setAdapter(adapter);

@@ -1,5 +1,7 @@
 package com.example.myhealing.adapter;
 
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myhealing.EmotionalDiary;
 import com.example.myhealing.R;
+import com.example.myhealing.ShowDiaryActivity;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -23,6 +26,12 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.MyViewHolder
 
     List<EmotionalDiary> diaryList;
 
+    Context context;
+
+    public DiaryAdapter(Context context) {
+        this.context = context;
+    }
+
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -34,9 +43,26 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.MyViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        holder.titleText.setText("제목 : "+diaryList.get(position).title);
-        holder.emotionText.setText("감정 : "+diaryList.get(position).emotion);
-        holder.creationText.setText(diaryList.get(position).creationDate);
+        int mPosition = holder.getAdapterPosition();
+
+        holder.titleText.setText("제목 : "+diaryList.get(mPosition).title);
+        holder.emotionText.setText("감정 : "+diaryList.get(mPosition).emotion);
+        holder.creationText.setText(diaryList.get(mPosition).creationDate);
+
+        //수정화면으로 이동
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(context, ShowDiaryActivity.class);
+                intent.putExtra("diaryCode", diaryList.get(mPosition).diaryCode);
+                intent.putExtra("title", diaryList.get(mPosition).title);
+                intent.putExtra("emotion", diaryList.get(mPosition).emotion);
+                intent.putExtra("creationDate", diaryList.get(mPosition).creationDate);
+                intent.putExtra("detail", diaryList.get(mPosition).detail);
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override

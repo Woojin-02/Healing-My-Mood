@@ -25,6 +25,7 @@
         </activity>
         <activity android:name=".ChatActivity"></activity>
         <activity android:name=".EditDiaryActivity" android:windowSoftInputMode="adjustResize"></activity>
+        <activity android:name=".ShowDiaryActivity" android:windowSoftInputMode="adjustResize"></activity>
 
     </application>
 
