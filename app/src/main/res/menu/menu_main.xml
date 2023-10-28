@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <group>
-        <item
-            android:id="@+id/menu_delete"
-            android:title="삭제"
-            android:icon="@drawable/baseline_delete_24"
-            />
-    </group>
+    <item
+        android:id="@+id/menu_list_most_recent"
+        android:title="최근순" />
+    <item
+        android:id="@+id/menu_list_old"
+        android:title="오래된순" />
+    <item
+        android:id="@+id/menu_list_day_descending"
+        android:title="날짜 오름차순" />
+    <item
+        android:id="@+id/menu_list_day_ascending"
+        android:title="날짜 내림차순" />
 </menu>

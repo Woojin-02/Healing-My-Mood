@@ -24,8 +24,13 @@ import java.util.List;
 
 public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.MyViewHolder>{
 
-    List<EmotionalDiary> diaryList;
+    // 다양한 정렬 방식을 나타내는 상수
+    public static final int SORT_RECENT = 0;  // 최근순
+    public static final int SORT_OLD = 1;  // 오래된순
+    public static final int SORT_DATE_ASC = 2;  // 날짜 오름차순
+    public static final int SORT_DATE_DESC = 3;  // 날짜 내림차순
 
+    List<EmotionalDiary> diaryList;
     Context context;
 
     public DiaryAdapter(Context context) {
@@ -71,25 +76,48 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.MyViewHolder
     }
 
     //리스트 저장
-    public void setDiaryList(List<EmotionalDiary> diaryList){
+    public void setDiaryList(List<EmotionalDiary> diaryList, int flag){
         if (diaryList != null) {
-            // creationDate에 따라 리스트를 내림차순으로 정렬
-            Collections.sort(diaryList, new Comparator<EmotionalDiary>() {
-                @Override
-                public int compare(EmotionalDiary diary1, EmotionalDiary diary2) {
-                    // creationDate를 파싱하여 비교
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                    try {
-                        Date date1 = sdf.parse(diary1.creationDate);
-                        Date date2 = sdf.parse(diary2.creationDate);
-                        return date2.compareTo(date1); // creationDate가 최신 순으로 정렬
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                    return 0;
-                }
-            });
-
+            switch (flag) {
+                case 0: // 최근순 정렬
+                    break;
+                case 1: // 오래된순 정렬
+                    break;
+                case 2: // 날짜 오름차순 정렬
+                    Collections.sort(diaryList, new Comparator<EmotionalDiary>() {
+                        @Override
+                        public int compare(EmotionalDiary diary1, EmotionalDiary diary2) {
+                            // creationDate를 파싱하여 비교 (오름차순)
+                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                            try {
+                                Date date1 = sdf.parse(diary1.creationDate);
+                                Date date2 = sdf.parse(diary2.creationDate);
+                                return date1.compareTo(date2);
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                            return 0;
+                        }
+                    });
+                    break;
+                case 3: // 날짜 내림차순 정렬
+                    Collections.sort(diaryList, new Comparator<EmotionalDiary>() {
+                        @Override
+                        public int compare(EmotionalDiary diary1, EmotionalDiary diary2) {
+                            // creationDate를 파싱하여 비교 (내림차순)
+                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                            try {
+                                Date date1 = sdf.parse(diary1.creationDate);
+                                Date date2 = sdf.parse(diary2.creationDate);
+                                return date2.compareTo(date1);
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                            return 0;
+                        }
+                    });
+                    break;
+            }
             this.diaryList = diaryList;
         } else {
             this.diaryList = new ArrayList<>();  // 빈 목록 생성

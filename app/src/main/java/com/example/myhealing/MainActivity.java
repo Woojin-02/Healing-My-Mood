@@ -1,5 +1,7 @@
 package com.example.myhealing;
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
@@ -19,6 +21,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView yearMonthTextView;
     private TextView prevMonthButton;
     private TextView nextMonthButton;
+    private ImageView ivSortDiaryList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +71,14 @@ public class MainActivity extends AppCompatActivity {
         updateYearMonthText();
         //사용자 조회
         loadUserListInMonth(currentYear, currentMonth);
+
+        ivSortDiaryList=findViewById(R.id.iv_sort_diary_list);
+        ivSortDiaryList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showPopupMainMenu(v);
+            }
+        });
 
         prevMonthButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -127,6 +140,51 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void showPopupMainMenu(View view) {
+        PopupMenu popupMenu = new PopupMenu(MainActivity.this, view);
+        popupMenu.getMenuInflater().inflate(R.menu.menu_main, popupMenu.getMenu());
+
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                int it = 0;
+                if(item.getItemId() == R.id.menu_list_most_recent) {
+                    it = 0;
+                } else if (item.getItemId() == R.id.menu_list_old) {
+                    it = 1;
+                } else if (item.getItemId() == R.id.menu_list_day_ascending) {
+                    it = 2;
+                } else if(item.getItemId() == R.id.menu_list_day_descending) {
+                    it = 3;
+                }
+                // 팝업 메뉴에서 선택한 메뉴 항목에 따라 동작을 정의
+                switch (it) {
+                    case 0:
+                        // 최근순 정렬 메뉴 항목 선택 시의 동작
+                        loadDiaryListInSort(currentMonth, currentYear, 0);
+                        return true;
+                    case 1:
+                        // 오래된순 정렬 메뉴 항목 선택 시의 동작
+                        loadDiaryListInSort(currentMonth, currentYear, 1);
+                        return true;
+                    case 2:
+                        // 날짜 오름차순 정렬 메뉴 항목 선택 시의 동작
+                        loadDiaryListInSort(currentMonth, currentYear, 2);
+                        return true;
+                    case 3:
+                        // 날짜 내림차순 정렬 메뉴 항목 선택 시의 동작
+                        loadDiaryListInSort(currentMonth, currentYear, 3);
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+        });
+
+        popupMenu.show();
+
+    }
+
     // yearMonthTextView의 텍스트를 업데이트합니다.
     private void updateYearMonthText() {
         String yearMonth = currentYear + "년 " + currentMonth + "월";
@@ -154,14 +212,21 @@ public class MainActivity extends AppCompatActivity {
         String yearMonthPrefix = String.format("%04d-%02d-", currentYear, currentMonth);
         AppDatabase db = AppDatabase.getDBInstance(this.getApplicationContext());
         List<EmotionalDiary> DiaryList = db.diaryDao().getDiaryByMonth(yearMonthPrefix);
-//        Toast.makeText(this, yearMonthPrefix, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, yearMonthPrefix, Toast.LENGTH_SHORT).show();
         //리스트 저장
-        adapter.setDiaryList(DiaryList);
+        adapter.setDiaryList(DiaryList, 3);
     }
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.menu_main,menu);
-//        return false;
-//    }
+    // 다이어리 정렬
+    private void loadDiaryListInSort(int currentYear, int currentMonth, int flag) {
+        // 년도와 월을 가져와서 yyyy-MM 형태의 문자열로 만듭니다
+        String yearMonthPrefix = String.format("%04d-%02d-", currentYear, currentMonth);
+        AppDatabase db = AppDatabase.getDBInstance(this.getApplicationContext());
+        List<EmotionalDiary> DiaryList = db.diaryDao().getDiaryByMonth(yearMonthPrefix);
+//        Toast.makeText(this, yearMonthPrefix, Toast.LENGTH_SHORT).show();
+        //리스트 저장
+        adapter.setDiaryList(DiaryList, flag);
+    }
+
+
 }
