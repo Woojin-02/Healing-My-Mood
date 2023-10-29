@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    app:contentInsetStart="0dp"
+    android:background="@color/teal_100">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/iv_goBack_searchToMain"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            app:srcCompat="@drawable/ic_arrow_back_24" />
+
+        <!-- EditText 추가 -->
+        <EditText
+            android:id="@+id/et_search"
+            android:layout_width="330dp"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/iv_goBack_searchToMain"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
+            android:hint="일기 검색" />
+
+        <!-- 검색 버튼 추가 -->
+        <ImageView
+            android:id="@+id/iv_et_search"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_toEndOf="@id/et_search"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
+            android:src="@drawable/ic_search_24" />
+
+    </RelativeLayout>
+
+</androidx.appcompat.widget.Toolbar>

@@ -27,6 +27,7 @@
         <activity android:name=".EditDiaryActivity" android:windowSoftInputMode="adjustResize"></activity>
         <activity android:name=".ShowDiaryActivity" android:windowSoftInputMode="adjustResize"></activity>
         <activity android:name=".UpdateDiaryActivity" android:windowSoftInputMode="adjustResize"></activity>
+        <activity android:name=".SearchDiaryActivity" ></activity>
 
     </application>
 

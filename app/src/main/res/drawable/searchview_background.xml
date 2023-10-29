@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:top="1dp">
+    <!-- 밑줄을 그립니다. -->
+        <shape android:shape="rectangle">
+            <solid android:color="#FFFFFF" /> <!-- 밑줄 색상 설정 -->
+        </shape>
+    </item>
+</layer-list>

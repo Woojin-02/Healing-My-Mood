@@ -20,6 +20,9 @@ public interface EmotionalDiaryDao {
     @Query("SELECT * FROM emotionalDiary WHERE diaryCode = :diaryCode")
     EmotionalDiary getOneDiaryByCode(int diaryCode);
 
+    @Query("SELECT * FROM emotionalDiary WHERE detail LIKE '%' || :searchText || '%' OR title LIKE '%' || :searchText || '%' OR emotion LIKE '%' || :searchText || '%'")
+    List<EmotionalDiary> getDiarySearchText(String searchText);
+
     @Insert
     void insertDiary(EmotionalDiary healing);
 

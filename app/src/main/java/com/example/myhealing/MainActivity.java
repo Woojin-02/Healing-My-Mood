@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView yearMonthTextView;
     private TextView prevMonthButton;
     private TextView nextMonthButton;
+    private ImageView ivSearch;
     private ImageView ivSortDiaryList;
     int it_flag;
     private static final String PREFS_NAME = "MyPrefsFile";
@@ -94,6 +95,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 showPopupMainMenu(v);
+            }
+        });
+
+        ivSearch=findViewById(R.id.iv_search);
+        ivSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 일기 검색 Activity 실행
+                Intent Searchintent = new Intent(MainActivity.this, SearchDiaryActivity.class);
+                startActivity(Searchintent);
             }
         });
 

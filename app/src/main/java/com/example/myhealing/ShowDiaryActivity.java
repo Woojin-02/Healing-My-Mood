@@ -56,12 +56,25 @@ public class ShowDiaryActivity extends AppCompatActivity {
         ivGoBackShowToMain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "onClick: 뒤로가기 클릭됨");
-                // Intent를 사용하여 MainActivity를 시작하고 현재 활동을 종료합니다
-                Intent intent = new Intent(ShowDiaryActivity.this, MainActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-                finish();
+                // 현재 활동의 클래스명을 가져옴
+                String currentActivityName = ShowDiaryActivity.this.getClass().getSimpleName();
+
+                // 이전 액티비티에 따라 다른 액티비티를 시작
+                Intent intent;
+                if (currentActivityName.equals("MainActivity")) {
+                    intent = new Intent(ShowDiaryActivity.this, MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                    finish();
+                } else if (currentActivityName.equals("SearchDiaryActivity")) {
+                    intent = new Intent(ShowDiaryActivity.this, SearchDiaryActivity.class);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    // 다른 이전 액티비티가 있는 경우 처리해야 함
+                    // 기본적으로 MainActivity를 실행
+                    finish();
+                }
             }
         });
 
@@ -141,11 +154,26 @@ public class ShowDiaryActivity extends AppCompatActivity {
 
                 // 삭제가 완료되면 사용자에게 메시지를 보여줄 수 있습니다.
                 Toast.makeText(getApplicationContext(), "일기가 삭제되었습니다.", Toast.LENGTH_SHORT).show();
-                // Intent를 사용하여 MainActivity를 시작하고 현재 활동을 종료합니다
-                Intent intent = new Intent(ShowDiaryActivity.this, MainActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-                finish(); // 현재 활동 종료
+
+                // 현재 활동의 클래스명을 가져옴
+                String currentActivityName = ShowDiaryActivity.this.getClass().getSimpleName();
+
+                // 이전 액티비티에 따라 다른 액티비티를 시작
+                Intent intent;
+                if (currentActivityName.equals("MainActivity")) {
+                    intent = new Intent(ShowDiaryActivity.this, MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                    finish();
+                } else if (currentActivityName.equals("SearchDiaryActivity")) {
+                    intent = new Intent(ShowDiaryActivity.this, SearchDiaryActivity.class);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    // 다른 이전 액티비티가 있는 경우 처리해야 함
+                    // 기본적으로 MainActivity를 실행
+                    finish();
+                }
             }
         });
         builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {

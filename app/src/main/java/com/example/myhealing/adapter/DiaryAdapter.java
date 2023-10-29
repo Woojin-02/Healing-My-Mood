@@ -40,7 +40,7 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.MyViewHolder
 
     public DiaryAdapter(Context context) {
         this.context = context;
-
+        this.diaryList = new ArrayList<>(); // 이 부분을 추가
         // SharedPreferences에서 저장된 정렬 설정을 불러옴
         sortingOption = loadSortingOption();
     }
@@ -145,7 +145,7 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.MyViewHolder
     public void setSortingOption(int option) {
         sortingOption = option;
         saveSortingOption(option);
-        notifyDataSetChanged(); // 어댑터에 새로운 정렬 옵션을 기반으로 데이터를 다시 바인딩하도록 알립니다
+//        notifyDataSetChanged(); // 어댑터에 새로운 정렬 옵션을 기반으로 데이터를 다시 바인딩하도록 알립니다
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
