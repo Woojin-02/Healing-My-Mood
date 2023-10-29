@@ -23,10 +23,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ChatActivity"></activity>
-        <activity android:name=".EditDiaryActivity" android:windowSoftInputMode="adjustResize"></activity>
-        <activity android:name=".ShowDiaryActivity" android:windowSoftInputMode="adjustResize"></activity>
-        <activity android:name=".UpdateDiaryActivity" android:windowSoftInputMode="adjustResize"></activity>
+        <activity android:name=".ChatActivity" android:windowSoftInputMode="adjustResize"></activity>
+        <activity android:name=".EditDiaryActivity" ></activity>
+        <activity android:name=".ShowDiaryActivity" ></activity>
+        <activity android:name=".UpdateDiaryActivity" ></activity>
         <activity android:name=".SearchDiaryActivity" ></activity>
 
     </application>

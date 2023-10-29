@@ -53,21 +53,6 @@ public class SearchDiaryActivity extends AppCompatActivity {
             }
         });
 
-        // EditText에 엔터 키 이벤트 리스너 설정
-        etSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_SEARCH
-                        || (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
-                    // 엔터 키(검색 버튼)를 누른 경우, 검색어 가져오고 검색 실행
-                    searchQuery = etSearch.getText().toString();
-                    SearchDiaryList(searchQuery);
-                    return true;
-                }
-                return false;
-            }
-        });
-
         ivGoBackSearchToMain=findViewById(R.id.iv_goBack_searchToMain);
         ivGoBackSearchToMain.setOnClickListener(new View.OnClickListener() {
             @Override

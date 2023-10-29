@@ -71,19 +71,20 @@
                 <EditText
                     android:id="@+id/edit_detail"
                     android:layout_width="match_parent"
+                    android:layout_height="480dp"
                     android:inputType="textMultiLine"
-                    android:layout_height="match_parent"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="2dp"
                     android:layout_marginRight="10dp"
                     android:background="@color/white"
                     android:hint="  일기를 작성하세요"
+                    android:gravity="top|left"
                     />
 
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="45dp">
-                </Space>
+<!--                <Space-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="45dp">-->
+<!--                </Space>-->
             </LinearLayout>
         </ScrollView>
     </LinearLayout>

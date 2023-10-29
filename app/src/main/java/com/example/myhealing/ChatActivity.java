@@ -75,7 +75,6 @@ public class ChatActivity extends AppCompatActivity {
         setContentView(R.layout.chat_space);
 
         recycler_view = findViewById(R.id.recycler_view);
-        tv_welcome = findViewById(R.id.tv_welcome);
         et_msg = findViewById(R.id.et_msg);
         btn_send = findViewById(R.id.btn_send);
 
@@ -121,7 +120,8 @@ public class ChatActivity extends AppCompatActivity {
                 Log.d(TAG, "onClick: 일기 생성 클릭됨");
                 // 일기 생성 메세지 전송
                 callDiaryAPI(userApiRequests.toString());
-                Toast.makeText(getApplicationContext(), "일기 생성", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "일기가 생성중입니다", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "잠시만 기다려주세요", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -248,7 +248,7 @@ public class ChatActivity extends AppCompatActivity {
         // 일기 작성 요청을 보낼 prompt
         String diaryPrompt = "사용자가 쓴 내용으로 일기를 만들어줘. " +
                 "['날짜:'(대한민국 서울시 표준시 기준 오늘 날짜), '제목:', '감정:'(명사로 작성), '내용:'] " +
-                "순서로 작성하고, ''안에 있는 내용('날짝:', '제목:', '감정:', '내용:')은 반드시 넣어줘. " +
+                "순서로 작성하고, ''안에 있는 내용('날짜:', '제목:', '감정:', '내용:')은 반드시 넣어줘. " +
                 "일기는 일기체로 작성해줘.";
 
         //okhttp
