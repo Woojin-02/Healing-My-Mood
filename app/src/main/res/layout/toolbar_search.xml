@@ -25,22 +25,24 @@
         <!-- EditText 추가 -->
         <EditText
             android:id="@+id/et_search"
-            android:layout_width="310dp"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_toEndOf="@id/iv_goBack_searchToMain"
             android:layout_alignParentTop="true"
             android:layout_alignParentBottom="true"
             android:hint="일기 검색" />
 
-        <!-- 검색 버튼 추가 -->
         <ImageView
             android:id="@+id/iv_et_search"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:layout_toEndOf="@id/et_search"
+            android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_alignParentBottom="true"
-            android:src="@drawable/ic_search_24" />
+            android:layout_marginStart="340dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            app:srcCompat="@drawable/ic_search_24" />
 
     </RelativeLayout>
 

@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.SearchView;
@@ -74,7 +75,7 @@ public class SearchDiaryActivity extends AppCompatActivity {
         // 이 곳에서 검색 결과를 업데이트합니다.
         // 검색어를 가져옵니다.
         searchQuery = etSearch.getText().toString();
-        SearchDiaryList(searchQuery);
+        SearchDiaryListStart(searchQuery);
     }
 
 
@@ -83,6 +84,28 @@ public class SearchDiaryActivity extends AppCompatActivity {
             AppDatabase db = AppDatabase.getDBInstance(getApplicationContext());
             List<EmotionalDiary> DiaryList = db.diaryDao().getDiarySearchText(query);
             adapter.setDiaryList(DiaryList);
+            Toast.makeText(this, "검색이 완료되었습니다", Toast.LENGTH_LONG).show();
+
+            // 키보드를 비활성화
+            InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(etSearch.getWindowToken(), 0);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e("SearchDiaryActivity", "Error in SearchDiaryList: " + e.getMessage());
+            // 예외 처리 또는 사용자에게 오류 메시지 표시
+            Toast.makeText(this, "검색 오류", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void SearchDiaryListStart(String query) {
+        try {
+            AppDatabase db = AppDatabase.getDBInstance(getApplicationContext());
+            List<EmotionalDiary> DiaryList = db.diaryDao().getDiarySearchText(query);
+            adapter.setDiaryList(DiaryList);
+
+            // 키보드를 비활성화
+            InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(etSearch.getWindowToken(), 0);
         } catch (Exception e) {
             e.printStackTrace();
             Log.e("SearchDiaryActivity", "Error in SearchDiaryList: " + e.getMessage());
