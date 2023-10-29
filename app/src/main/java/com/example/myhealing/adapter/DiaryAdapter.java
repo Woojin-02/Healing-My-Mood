@@ -22,16 +22,17 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
-public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.MyViewHolder>{
+public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.MyViewHolder> {
 
     // 다양한 정렬 방식을 나타내는 상수
     public static final int SORT_RECENT = 0;  // 최근순
-    public static final int SORT_OLD = 1;  // 오래된순
-    public static final int SORT_DATE_ASC = 2;  // 날짜 오름차순
-    public static final int SORT_DATE_DESC = 3;  // 날짜 내림차순
+    public static final int SORT_OLD = 1;     // 오래된순
+    public static final int SORT_DATE_ASC = 2; // 날짜 오름차순
+    public static final int SORT_DATE_DESC = 3; // 날짜 내림차순
 
-    List<EmotionalDiary> diaryList;
-    Context context;
+    private List<EmotionalDiary> diaryList;
+    private Context context;
+    private int sortingOption = SORT_RECENT; // 기본값으로 SORT_RECENT를 선택
 
     public DiaryAdapter(Context context) {
         this.context = context;
@@ -40,7 +41,6 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.MyViewHolder
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View view = inflater.inflate(R.layout.list_item, parent, false);
         return new MyViewHolder(view);
@@ -50,15 +50,66 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.MyViewHolder
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         int mPosition = holder.getAdapterPosition();
 
-        holder.titleText.setText("제목 : "+diaryList.get(mPosition).title);
-        holder.emotionText.setText("감정 : "+diaryList.get(mPosition).emotion);
+        // 선택한 정렬 옵션에 따라 diaryList를 정렬합니다.
+        switch (sortingOption) {
+            case SORT_RECENT:
+                Collections.sort(diaryList, new Comparator<EmotionalDiary>() {
+                    @Override
+                    public int compare(EmotionalDiary diary1, EmotionalDiary diary2) {
+                        return Integer.compare(diary2.diaryCode, diary1.diaryCode);
+                    }
+                });
+                break;
+            case SORT_OLD:
+                Collections.sort(diaryList, new Comparator<EmotionalDiary>() {
+                    @Override
+                    public int compare(EmotionalDiary diary1, EmotionalDiary diary2) {
+                        return Integer.compare(diary1.diaryCode, diary2.diaryCode);
+                    }
+                });
+                break;
+            case SORT_DATE_ASC:
+                Collections.sort(diaryList, new Comparator<EmotionalDiary>() {
+                    @Override
+                    public int compare(EmotionalDiary diary1, EmotionalDiary diary2) {
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                        try {
+                            Date date1 = sdf.parse(diary1.creationDate);
+                            Date date2 = sdf.parse(diary2.creationDate);
+                            return date1.compareTo(date2);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                        return 0;
+                    }
+                });
+                break;
+            case SORT_DATE_DESC:
+                Collections.sort(diaryList, new Comparator<EmotionalDiary>() {
+                    @Override
+                    public int compare(EmotionalDiary diary1, EmotionalDiary diary2) {
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                        try {
+                            Date date1 = sdf.parse(diary1.creationDate);
+                            Date date2 = sdf.parse(diary2.creationDate);
+                            return date2.compareTo(date1);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                        return 0;
+                    }
+                });
+                break;
+        }
+
+        holder.titleText.setText("제목: " + diaryList.get(mPosition).title);
+        holder.emotionText.setText("감정: " + diaryList.get(mPosition).emotion);
         holder.creationText.setText(diaryList.get(mPosition).creationDate);
 
-        //수정화면으로 이동
+        // ShowDiaryActivity를 여는 클릭 리스너를 추가합니다.
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 Intent intent = new Intent(context, ShowDiaryActivity.class);
                 intent.putExtra("diaryCode", diaryList.get(mPosition).diaryCode);
                 intent.putExtra("title", diaryList.get(mPosition).title);
@@ -72,52 +123,11 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.MyViewHolder
 
     @Override
     public int getItemCount() {
-        return this.diaryList.size();
+        return diaryList.size();
     }
 
-    //리스트 저장
-    public void setDiaryList(List<EmotionalDiary> diaryList, int flag){
+    public void setDiaryList(List<EmotionalDiary> diaryList) {
         if (diaryList != null) {
-            switch (flag) {
-                case 0: // 최근순 정렬
-                    break;
-                case 1: // 오래된순 정렬
-                    break;
-                case 2: // 날짜 오름차순 정렬
-                    Collections.sort(diaryList, new Comparator<EmotionalDiary>() {
-                        @Override
-                        public int compare(EmotionalDiary diary1, EmotionalDiary diary2) {
-                            // creationDate를 파싱하여 비교 (오름차순)
-                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                            try {
-                                Date date1 = sdf.parse(diary1.creationDate);
-                                Date date2 = sdf.parse(diary2.creationDate);
-                                return date1.compareTo(date2);
-                            } catch (ParseException e) {
-                                e.printStackTrace();
-                            }
-                            return 0;
-                        }
-                    });
-                    break;
-                case 3: // 날짜 내림차순 정렬
-                    Collections.sort(diaryList, new Comparator<EmotionalDiary>() {
-                        @Override
-                        public int compare(EmotionalDiary diary1, EmotionalDiary diary2) {
-                            // creationDate를 파싱하여 비교 (내림차순)
-                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                            try {
-                                Date date1 = sdf.parse(diary1.creationDate);
-                                Date date2 = sdf.parse(diary2.creationDate);
-                                return date2.compareTo(date1);
-                            } catch (ParseException e) {
-                                e.printStackTrace();
-                            }
-                            return 0;
-                        }
-                    });
-                    break;
-            }
             this.diaryList = diaryList;
         } else {
             this.diaryList = new ArrayList<>();  // 빈 목록 생성
@@ -125,9 +135,14 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.MyViewHolder
         notifyDataSetChanged();  // 어댑터에 변경 사항 알리기
     }
 
-    class MyViewHolder extends RecyclerView.ViewHolder{
+    public void setSortingOption(int option) {
+        sortingOption = option;
+        notifyDataSetChanged(); // 어댑터에 새로운 정렬 옵션을 기반으로 데이터를 다시 바인딩하도록 알립니다
+    }
 
-        TextView titleText, emotionText, creationText, CodeText, detailText;
+    class MyViewHolder extends RecyclerView.ViewHolder {
+
+        TextView titleText, emotionText, creationText;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);

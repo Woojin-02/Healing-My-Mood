@@ -30,7 +30,12 @@ import com.example.myhealing.adapter.DiaryAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -42,6 +47,8 @@ public class MainActivity extends AppCompatActivity {
     private TextView prevMonthButton;
     private TextView nextMonthButton;
     private ImageView ivSortDiaryList;
+
+    int it_flag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
         // 초기 월을 설정합니다.
         updateYearMonthText();
         //사용자 조회
-        loadUserListInMonth(currentYear, currentMonth);
+        loadDiaryListInMonth(currentYear, currentMonth);
 
         ivSortDiaryList=findViewById(R.id.iv_sort_diary_list);
         ivSortDiaryList.setOnClickListener(new View.OnClickListener() {
@@ -92,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
                     currentYear--;
                 }
                 updateYearMonthText();
-                loadUserListInMonth(currentYear, currentMonth);
+                loadDiaryListInMonth(currentYear, currentMonth);
             }
         });
 
@@ -107,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
                     currentMonth++;
                 }
                 updateYearMonthText();
-                loadUserListInMonth(currentYear, currentMonth);
+                loadDiaryListInMonth(currentYear, currentMonth);
             }
         });
 
@@ -122,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
                         currentYear = year;
                         currentMonth = monthOfYear;
                         updateYearMonthText();
-                        loadUserListInMonth(currentYear, currentMonth);
+                        loadDiaryListInMonth(currentYear, currentMonth);
                     }
                 });
                 pd.show(getSupportFragmentManager(), "YearMonthPickerTest");
@@ -157,32 +164,22 @@ public class MainActivity extends AppCompatActivity {
                 } else if(item.getItemId() == R.id.menu_list_day_descending) {
                     it = 3;
                 }
-                // 팝업 메뉴에서 선택한 메뉴 항목에 따라 동작을 정의
-                switch (it) {
-                    case 0:
-                        // 최근순 정렬 메뉴 항목 선택 시의 동작
-                        loadDiaryListInSort(currentMonth, currentYear, 0);
-                        return true;
-                    case 1:
-                        // 오래된순 정렬 메뉴 항목 선택 시의 동작
-                        loadDiaryListInSort(currentMonth, currentYear, 1);
-                        return true;
-                    case 2:
-                        // 날짜 오름차순 정렬 메뉴 항목 선택 시의 동작
-                        loadDiaryListInSort(currentMonth, currentYear, 2);
-                        return true;
-                    case 3:
-                        // 날짜 내림차순 정렬 메뉴 항목 선택 시의 동작
-                        loadDiaryListInSort(currentMonth, currentYear, 3);
-                        return true;
-                    default:
-                        return false;
+                if (it == 0) {
+                    it_flag = 0;
+                } else if (it == 1) {
+                    it_flag = 1;
+                } else if (it == 2) {
+                    it_flag = 2;
+                } else if (it == 3) {
+                    it_flag = 3;
                 }
+                adapter.setSortingOption(it_flag);
+                loadDiaryListInMonth(currentYear, currentMonth);
+                return true;
             }
         });
 
         popupMenu.show();
-
     }
 
     // yearMonthTextView의 텍스트를 업데이트합니다.
@@ -200,33 +197,20 @@ public class MainActivity extends AppCompatActivity {
                     if(result.getResultCode() == RESULT_OK){
 
                         //사용자 조회
-                        loadUserListInMonth(currentYear, currentMonth);
+                        loadDiaryListInMonth(currentYear, currentMonth);
                     }
                 }
             }
     );
 
     //사용자 조회
-    private void loadUserListInMonth(int currentYear, int currentMonth) {
+    private void loadDiaryListInMonth(int currentYear, int currentMonth) {
         // 년도와 월을 가져와서 yyyy-MM 형태의 문자열로 만듭니다
         String yearMonthPrefix = String.format("%04d-%02d-", currentYear, currentMonth);
         AppDatabase db = AppDatabase.getDBInstance(this.getApplicationContext());
         List<EmotionalDiary> DiaryList = db.diaryDao().getDiaryByMonth(yearMonthPrefix);
-        Toast.makeText(this, yearMonthPrefix, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, String.valueOf(flag), Toast.LENGTH_SHORT).show();
         //리스트 저장
-        adapter.setDiaryList(DiaryList, 3);
+        adapter.setDiaryList(DiaryList);
     }
-
-    // 다이어리 정렬
-    private void loadDiaryListInSort(int currentYear, int currentMonth, int flag) {
-        // 년도와 월을 가져와서 yyyy-MM 형태의 문자열로 만듭니다
-        String yearMonthPrefix = String.format("%04d-%02d-", currentYear, currentMonth);
-        AppDatabase db = AppDatabase.getDBInstance(this.getApplicationContext());
-        List<EmotionalDiary> DiaryList = db.diaryDao().getDiaryByMonth(yearMonthPrefix);
-//        Toast.makeText(this, yearMonthPrefix, Toast.LENGTH_SHORT).show();
-        //리스트 저장
-        adapter.setDiaryList(DiaryList, flag);
-    }
-
-
 }
