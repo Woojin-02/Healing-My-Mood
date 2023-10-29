@@ -13,7 +13,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -47,8 +49,9 @@ public class MainActivity extends AppCompatActivity {
     private TextView prevMonthButton;
     private TextView nextMonthButton;
     private ImageView ivSortDiaryList;
-
     int it_flag;
+    private static final String PREFS_NAME = "MyPrefsFile";
+    private static final String PREF_SORTING_OPTION = "sorting_option";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +67,13 @@ public class MainActivity extends AppCompatActivity {
 
         //RecyclerView Adapter 설정
         recyclerView.setAdapter(adapter);
+
+        // SharedPreferences에서 저장된 정렬 설정을 불러옴
+        it_flag = loadSortingOption();
+
+        // Adapter에 저장된 정렬 옵션을 설정
+        adapter.setSortingOption(it_flag);
+
 
         yearMonthTextView = findViewById(R.id.yearMonthTextView);
         prevMonthButton = findViewById(R.id.prevMonthButton);
@@ -173,6 +183,9 @@ public class MainActivity extends AppCompatActivity {
                 } else if (it == 3) {
                     it_flag = 3;
                 }
+                // SharedPreferences에 정렬 설정 저장
+                saveSortingOption(it_flag);
+
                 adapter.setSortingOption(it_flag);
                 loadDiaryListInMonth(currentYear, currentMonth);
                 return true;
@@ -212,5 +225,17 @@ public class MainActivity extends AppCompatActivity {
 //        Toast.makeText(this, String.valueOf(flag), Toast.LENGTH_SHORT).show();
         //리스트 저장
         adapter.setDiaryList(DiaryList);
+    }
+
+    private void saveSortingOption(int option) {
+        SharedPreferences sharedPref = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putInt(PREF_SORTING_OPTION, option);
+        editor.apply();
+    }
+
+    private int loadSortingOption() {
+        SharedPreferences sharedPref = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        return sharedPref.getInt(PREF_SORTING_OPTION, DiaryAdapter.SORT_RECENT);
     }
 }

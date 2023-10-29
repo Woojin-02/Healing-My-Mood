@@ -2,6 +2,7 @@ package com.example.myhealing.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,8 +35,14 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.MyViewHolder
     private Context context;
     private int sortingOption = SORT_RECENT; // 기본값으로 SORT_RECENT를 선택
 
+    private static final String PREFS_NAME = "MyPrefsFile";
+    private static final String PREF_SORTING_OPTION = "sorting_option";
+
     public DiaryAdapter(Context context) {
         this.context = context;
+
+        // SharedPreferences에서 저장된 정렬 설정을 불러옴
+        sortingOption = loadSortingOption();
     }
 
     @NonNull
@@ -137,6 +144,7 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.MyViewHolder
 
     public void setSortingOption(int option) {
         sortingOption = option;
+        saveSortingOption(option);
         notifyDataSetChanged(); // 어댑터에 새로운 정렬 옵션을 기반으로 데이터를 다시 바인딩하도록 알립니다
     }
 
@@ -151,5 +159,17 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.MyViewHolder
             emotionText = itemView.findViewById(R.id.emotion_text);
             creationText = itemView.findViewById(R.id.creation_text);
         }
+    }
+
+    private void saveSortingOption(int option) {
+        SharedPreferences sharedPref = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putInt(PREF_SORTING_OPTION, option);
+        editor.apply();
+    }
+
+    private int loadSortingOption() {
+        SharedPreferences sharedPref = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        return sharedPref.getInt(PREF_SORTING_OPTION, SORT_RECENT);
     }
 }
