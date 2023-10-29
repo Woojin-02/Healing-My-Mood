@@ -101,10 +101,6 @@ public class ChatActivity extends AppCompatActivity {
 
         ivGoBackMenu=findViewById(R.id.iv_goBack_chatToMain);
         ivCrateDiary=findViewById(R.id.iv_create_diary);
-//        toolbar = findViewById(R.id.toolbar);
-//
-//        //액션바 변경하기(들어갈 수 있는 타입 : Toolbar type
-//        setSupportActionBar(toolbar);
 
         ivGoBackMenu.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,54 +120,8 @@ public class ChatActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Log.d(TAG, "onClick: 일기 생성 클릭됨");
                 // 일기 생성 메세지 전송
-//                callDiaryAPI(userApiRequests.toString());
+                callDiaryAPI(userApiRequests.toString());
                 Toast.makeText(getApplicationContext(), "일기 생성", Toast.LENGTH_SHORT).show();
-
-                // 주어진 일기 내용
-                // test code
-                String diaryResponse = "날짜: 2022년 9월 15일\n"+
-                "제목: 엄마와의 싸움과 반성\n"+
-                "감정: 억울함, 분노, 미안함\n"+
-                "내용: 오늘은 엄마와 큰 싸움을 했다. 어떤 이유에서인지 엄마를 무시당하는 것 같다 고 생각해서 짜증이 났다. 감정이 고조되어 엄마에게 큰 소리로 상관 말라고 소리치 며 싸움까지 했다. 그 후로 너무 억울하고 분해서 울었어.\n"+
-                "하지만 나중에 알고 보니 내가 엄마의 마음을 오해한 것이었다. 엄마는 나를 무시하 려는 게 아니었고, 오히려 내 안을 신경쓰고 싶어하는 마음이었다는 걸 알게 되었다. 그렇게 알게 된 후로는 엄마에게 미안하다는 말과 함께 사과를 했다.\n"+
-                "이 모든 일로 부터 배운 것은 차분하게 대화하는 중요성이다. 분노와 억울함에 휩싸 인 채 큰 소리로 싸우는 것보다는 차분하게 상황을 이해하고 대화하는 게 더 좋은 결 과를 가져올 수 있다는 것을 깨달았다. 앞으로는 조금만 참고 차분한 마음가짐으로 대화하려고 노력해야겠다.";
-
-                // 정규 표현식을 사용하여 일기 정보를 추출
-                Pattern datePattern = Pattern.compile("날짜: (.*?)\\n");
-                Pattern titlePattern = Pattern.compile("제목: (.*?)\\n");
-                Pattern emotionPattern = Pattern.compile("감정: (.*?)\\n");
-                Pattern detailPattern = Pattern.compile("내용: ([\\s\\S]*)");
-
-                Matcher dateMatcher = datePattern.matcher(diaryResponse);
-                Matcher titleMatcher = titlePattern.matcher(diaryResponse);
-                Matcher emotionMatcher = emotionPattern.matcher(diaryResponse);
-                Matcher detailMatcher = detailPattern.matcher(diaryResponse);
-
-                if (dateMatcher.find()) {
-                    diaryDate = dateMatcher.group(1);
-                }
-
-                if (titleMatcher.find()) {
-                    diaryTitle = titleMatcher.group(1);
-                }
-
-                if (emotionMatcher.find()) {
-                    diaryEmotion = emotionMatcher.group(1);
-                }
-
-                if (detailMatcher.find()) {
-                    diaryDetail = detailMatcher.group(1);
-                }
-
-                //EditDiaryActivity로 데이터 전달
-                Intent intent = new Intent(ChatActivity.this, EditDiaryActivity.class);
-
-                intent.putExtra("diaryDate", diaryDate);
-                intent.putExtra("diaryTitle", diaryTitle);
-                intent.putExtra("diaryEmotion", diaryEmotion);
-                intent.putExtra("diaryDetail", diaryDetail);
-
-                startActivity(intent);
             }
         });
 
