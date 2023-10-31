@@ -42,15 +42,15 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    DiaryAdapter adapter;
-    private int currentYear;
-    private int currentMonth;
-    private TextView yearMonthTextView;
-    private TextView prevMonthButton;
-    private TextView nextMonthButton;
-    private ImageView ivSearch;
-    private ImageView ivSortDiaryList;
-    int it_flag;
+    DiaryAdapter adapter;  // 어댑터 선언
+    private int currentYear;  // 현재 년도
+    private int currentMonth;  // 현재 달
+    private TextView yearMonthTextView;  // TextView 저장
+    private TextView prevMonthButton;  // TextView 저장
+    private TextView nextMonthButton;  // TextView 저장
+    private ImageView ivSearch;  // ImageView 저장
+    private ImageView ivSortDiaryList;  // ImageView 저장
+    int it_flag;  // 정렬 플래그
     private static final String PREFS_NAME = "MyPrefsFile";
     private static final String PREF_SORTING_OPTION = "sorting_option";
 

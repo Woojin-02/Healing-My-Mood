@@ -105,7 +105,6 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "onClick: 뒤로가기 클릭됨");
-                Toast.makeText(getApplicationContext(), "버튼 클릭", Toast.LENGTH_SHORT).show();
                 // intent 종료
                 finish();
                 // 대화 내용 초기화
