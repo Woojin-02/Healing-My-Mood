@@ -47,7 +47,6 @@ import okhttp3.Response;
 public class ChatActivity extends AppCompatActivity {
 
     RecyclerView recycler_view;
-    TextView tv_welcome;
     EditText et_msg;
     ImageButton btn_send;
     List<Message> messageList;
@@ -94,7 +93,6 @@ public class ChatActivity extends AppCompatActivity {
                 addToChat(question, Message.SENT_BY_ME);
                 et_msg.setText("");
                 callAPI(question);
-                tv_welcome.setVisibility(View.GONE);
             }
         });
 
@@ -162,13 +160,7 @@ public class ChatActivity extends AppCompatActivity {
 
     void callAPI(String question){
         String prompt =
-                "당신은 '감정봇'입니다." +
-                "당신은 사용자와 대화하며 사용자가 감정을 정리할 수 있도록 도와줍니다." +
-                "사용자에게 인사를 하고, 사용자에게 있었던 일을 마음 편히 털어놓으라고 권유합니다." +
-                "그 이후 사용자에게 [사건, 생각, 감정, 행동, 결과]에 관한 질문을 합니다. 질문은 한번의 응답에 하나씩만 하며, 순서대로 질문합니다." +
-                "사용자가 모든 질문에 대답을 하면, 사용자에게 생성 버튼을 눌러 일기를 생성하라고 안내합니다." +
-                "간결하고 쉬운 표현을 사용하고, 사용자에게 공감합니다."+
-                "사용자에게 존댓말을 사용하며, 사용자를 '당신'이라고 호칭합니다.";
+                "당신은 상냥한 감정봇입니다. 사용자의 감정에 대한 사건, 생각, 감정, 행동, 결과에 대해 묻고 대답을 들으세요.";
 
         userApiRequests.add(question);
 
@@ -204,9 +196,9 @@ public class ChatActivity extends AppCompatActivity {
         JSONObject object = new JSONObject();
         try {
             //모델명 변경
-            object.put("model", "gpt-3.5-turbo");
+            object.put("model", "ft:gpt-3.5-turbo-0613:personal::8HSev4zF");
             object.put("messages", arr);
-            object.put("max_tokens", 256);
+            object.put("max_tokens", 1024);
 //            object.put("temperature", 1);
         } catch (JSONException e){
             e.printStackTrace();
@@ -245,10 +237,10 @@ public class ChatActivity extends AppCompatActivity {
 
     void callDiaryAPI(String userApiRequests) {
         // 일기 작성 요청을 보낼 prompt
-        String diaryPrompt = "사용자가 쓴 내용으로 일기를 만들어줘. " +
-                "['날짜:'(대한민국 서울시 표준시 기준 오늘 날짜), '제목:', '감정:'(명사로 작성), '내용:'] " +
-                "순서로 작성하고, ''안에 있는 내용('날짜:', '제목:', '감정:', '내용:')은 반드시 넣어줘. " +
-                "일기는 일기체로 작성해줘.";
+        String diaryPrompt = "위 내용으로 일기 만들어줘. 양식은 아래와 같이 해줘.\n" +
+                "'제목:',\n" +
+                "'감정:'(명사로 작성)\n" +
+                "'내용:'";
 
         //okhttp
         messageList.add(new Message("...", Message.SENT_BY_BOT));
@@ -273,7 +265,7 @@ public class ChatActivity extends AppCompatActivity {
         JSONObject object = new JSONObject();
         try {
             //모델명 변경
-            object.put("model", "gpt-3.5-turbo");
+            object.put("model", "ft:gpt-3.5-turbo-0613:personal::8HU2luS1");
             object.put("messages", arr);
             object.put("max_tokens", 256);
 //            object.put("temperature", 1);
