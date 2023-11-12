@@ -81,6 +81,14 @@ public class MyDatePickerDialog extends DialogFragment {
         dayPicker.setMaxValue(31);
         dayPicker.setValue(cal.get(Calendar.DAY_OF_MONTH));
 
+        // 일(NumberPicker)의 형식을 두 자릿수로 표시하도록 포맷팅
+        dayPicker.setFormatter(new NumberPicker.Formatter() {
+            @Override
+            public String format(int value) {
+                return String.format("%02d", value);
+            }
+        });
+
         if (updateDate != null) {
             // updateDate가 설정되어 있다면 해당 날짜를 파싱하여 설정
             String[] dateParts = updateDate.split("-");

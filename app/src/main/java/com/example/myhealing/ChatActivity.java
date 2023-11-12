@@ -238,9 +238,9 @@ public class ChatActivity extends AppCompatActivity {
     void callDiaryAPI(String userApiRequests) {
         // 일기 작성 요청을 보낼 prompt
         String diaryPrompt = "위 내용으로 일기 만들어줘. 양식은 아래와 같이 해줘.\n" +
-                "'제목:',\n" +
-                "'감정:'(명사로 작성)\n" +
-                "'내용:'";
+                "'제목: ',\n" +
+                "'감정: '(명사로 작성)\n" +
+                "'내용: '";
 
         //okhttp
         messageList.add(new Message("...", Message.SENT_BY_BOT));
@@ -267,7 +267,7 @@ public class ChatActivity extends AppCompatActivity {
             //모델명 변경
             object.put("model", "ft:gpt-3.5-turbo-0613:personal::8HU2luS1");
             object.put("messages", arr);
-            object.put("max_tokens", 256);
+            object.put("max_tokens", 1024);
 //            object.put("temperature", 1);
         } catch (JSONException e){
             e.printStackTrace();
@@ -314,12 +314,12 @@ public class ChatActivity extends AppCompatActivity {
         Pattern datePattern = Pattern.compile("날짜: (.*?)\\n");
         Pattern titlePattern = Pattern.compile("제목: (.*?)\\n");
         Pattern emotionPattern = Pattern.compile("감정: (.*?)\\n");
-        Pattern detailPattern = Pattern.compile("내용: ([\\s\\S]*)");
+        Pattern detailPattern1 = Pattern.compile("내용:(.*?)$", Pattern.DOTALL);
 
         Matcher dateMatcher = datePattern.matcher(response);
         Matcher titleMatcher = titlePattern.matcher(response);
         Matcher emotionMatcher = emotionPattern.matcher(response);
-        Matcher detailMatcher = detailPattern.matcher(response);
+        Matcher detailMatcher = detailPattern1.matcher(response);
 
         if (dateMatcher.find()) {
             diaryDate = dateMatcher.group(1);

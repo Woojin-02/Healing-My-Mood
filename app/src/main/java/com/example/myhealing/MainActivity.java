@@ -75,7 +75,6 @@ public class MainActivity extends AppCompatActivity {
         // Adapter에 저장된 정렬 옵션을 설정
         adapter.setSortingOption(it_flag);
 
-
         yearMonthTextView = findViewById(R.id.yearMonthTextView);
         prevMonthButton = findViewById(R.id.prevMonthButton);
         nextMonthButton = findViewById(R.id.nextMonthButton);

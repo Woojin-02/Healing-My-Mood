@@ -108,7 +108,9 @@ public class UpdateDiaryActivity extends AppCompatActivity {
 
     // updateDate의 텍스트를 업데이트합니다.
     private void updateYearMonthText() {
-        String yearMonthDay = currentYear + "-" + currentMonth + "-" + currentDay;
+        String formattedMonth = String.format("%02d", currentMonth); // 월을 두 자리로 포맷팅
+        String formattedDay = String.format("%02d", currentDay); // 일을 두 자리로 포맷팅
+        String yearMonthDay = currentYear + "-" + formattedMonth + "-" + formattedDay;
         updateDate.setText(yearMonthDay);
     }
 

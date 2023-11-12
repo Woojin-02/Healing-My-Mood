@@ -61,20 +61,14 @@ public class ShowDiaryActivity extends AppCompatActivity {
 
                 // 이전 액티비티에 따라 다른 액티비티를 시작
                 Intent intent;
-                if (currentActivityName.equals("MainActivity")) {
+                if (currentActivityName.equals("SearchDiaryActivity")) {
+                    intent = new Intent(ShowDiaryActivity.this, SearchDiaryActivity.class);
+                } else {
                     intent = new Intent(ShowDiaryActivity.this, MainActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
-                    finish();
-                } else if (currentActivityName.equals("SearchDiaryActivity")) {
-                    intent = new Intent(ShowDiaryActivity.this, SearchDiaryActivity.class);
-                    startActivity(intent);
-                    finish();
-                } else {
-                    // 다른 이전 액티비티가 있는 경우 처리해야 함
-                    // 기본적으로 MainActivity를 실행
-                    finish();
                 }
+                startActivity(intent);
+                finish();
             }
         });
 
@@ -160,20 +154,14 @@ public class ShowDiaryActivity extends AppCompatActivity {
 
                 // 이전 액티비티에 따라 다른 액티비티를 시작
                 Intent intent;
-                if (currentActivityName.equals("MainActivity")) {
+                if (currentActivityName.equals("SearchDiaryActivity")) {
+                    intent = new Intent(ShowDiaryActivity.this, SearchDiaryActivity.class);
+                } else {
                     intent = new Intent(ShowDiaryActivity.this, MainActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
-                    finish();
-                } else if (currentActivityName.equals("SearchDiaryActivity")) {
-                    intent = new Intent(ShowDiaryActivity.this, SearchDiaryActivity.class);
-                    startActivity(intent);
-                    finish();
-                } else {
-                    // 다른 이전 액티비티가 있는 경우 처리해야 함
-                    // 기본적으로 MainActivity를 실행
-                    finish();
                 }
+                startActivity(intent);
+                finish();
             }
         });
         builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
