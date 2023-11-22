@@ -1,43 +1,35 @@
 package com.example.myhealing;
 
-import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+import static android.app.PendingIntent.getActivity;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.myhealing.adapter.DiaryAdapter;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
+//import com.github.clans.fab.FloatingActionMenu;
+//import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.github.clans.fab.FloatingActionButton;
+import com.github.clans.fab.FloatingActionMenu;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -156,13 +148,65 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+//        FloatingActionButton fab = findViewById(R.id.fab);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                // 버튼이 클릭되었을 때 수행할 동작
+//                Intent intent = new Intent(MainActivity.this, ChatActivity.class);
+//                startActivity(intent);
+//            }
+//        });
+        final FloatingActionMenu menu = findViewById(R.id.menu);
+        FloatingActionButton fabChatbot = findViewById(R.id.fab_chatbot);
+        FloatingActionButton fabWrite = findViewById(R.id.fab_write);
+
+        FloatingActionButton chatFab = findViewById(R.id.fab_chatbot);
+
+        chatFab.setImageDrawable(
+                AppCompatResources.getDrawable(this, R.drawable.ic_create_chatbot)
+        );
+
+        FloatingActionButton writeFab = findViewById(R.id.fab_write);
+
+        writeFab.setImageDrawable(
+                AppCompatResources.getDrawable(this, R.drawable.ic_playlist_add_24)
+        );
+
+
+        fabChatbot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // fabOption1을 클릭했을 때 수행할 작업 추가
+                menu.close(true);
                 // 버튼이 클릭되었을 때 수행할 동작
                 Intent intent = new Intent(MainActivity.this, ChatActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        fabWrite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // fabOption2를 클릭했을 때 수행할 작업 추가
+                menu.close(true);
+                Intent intent = new Intent(MainActivity.this, WriteDiaryActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        menu.setOnMenuToggleListener(new FloatingActionMenu.OnMenuToggleListener() {
+            @Override
+            public void onMenuToggle(boolean opened) {
+                if (opened) {
+                    // 메뉴가 열렸을 때 처리할 내용
+                    fabChatbot.setVisibility(View.VISIBLE);
+                    fabWrite.setVisibility(View.VISIBLE);
+                } else {
+                    // 메뉴가 닫혔을 때 처리할 내용
+                    fabChatbot.setVisibility(View.GONE);
+                    fabWrite.setVisibility(View.GONE);
+                }
             }
         });
     }

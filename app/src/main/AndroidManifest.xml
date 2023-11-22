@@ -13,7 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyHealing"
-        tools:targetApi="31">
+        tools:targetApi="31"
+        android:hardwareAccelerated="true">
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -25,6 +26,7 @@
         </activity>
         <activity android:name=".ChatActivity" android:windowSoftInputMode="adjustResize"></activity>
         <activity android:name=".HomeCalendarActivity" ></activity>
+        <activity android:name=".WriteDiaryActivity"></activity>
         <activity android:name=".EditDiaryActivity" ></activity>
         <activity android:name=".ShowDiaryActivity" ></activity>
         <activity android:name=".UpdateDiaryActivity" ></activity>

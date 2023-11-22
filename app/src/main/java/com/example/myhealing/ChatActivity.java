@@ -196,7 +196,8 @@ public class ChatActivity extends AppCompatActivity {
         JSONObject object = new JSONObject();
         try {
             //모델명 변경
-            object.put("model", "ft:gpt-3.5-turbo-0613:personal::8HSev4zF");
+//            object.put("model", "ft:gpt-3.5-turbo-0613:personal::8HSev4zF");
+            object.put("model", "ft:gpt-3.5-turbo-0613:personal::8NKPSi15");
             object.put("messages", arr);
             object.put("max_tokens", 1024);
 //            object.put("temperature", 1);
