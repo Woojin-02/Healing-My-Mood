@@ -66,7 +66,7 @@ public class ChatActivity extends AppCompatActivity {
     private ImageView ivCrateDiary;
 //    private Toolbar toolbar;
 
-    private static final String MY_SECRET_KEY = "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";
+    private static final String MY_SECRET_KEY = "API-KEY";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
